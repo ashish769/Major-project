@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}
+illegal_dumping
+{% endblock title %}
+{% block css %}
+<style>
+
+
+  .container {
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .report-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 48%;
+  }
+
+  .report-title {
+    font-size: 1.4em;
+    color: #2c3e50;
+    font-weight: bold;
+  }
+
+  .report-info {
+    margin-top: 10px;
+    color: #7f8c8d;
+  }
+
+  .carousel-inner img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .report-description {
+    margin-top: 10px;
+  }
+
+  .alert {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .report-card {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+
+  .report-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .carousel-indicators button {
+    background-color: #007bff;
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: #007bff;
+  }
+</style>
+{% endblock css %}
+{% block content %}
+<div class="container">
+
+  <!-- Reports Container (Desktop View) -->
+  <div class="report-container">
+
+    <!-- Report 1 -->
+    <div class="report-card">
+      <h3 class="report-title">Report #1: Illegal Dumping in Sector 3</h3>
+      <div class="report-info">
+        <span>Reported By: John Doe</span> | 
+        <span>Reported On: 2025-05-01 10:15 AM</span>
+      </div>
+
+      <!-- Image Carousel -->
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://via.placeholder.com/800x300?text=Illegal+Dumping+1" class="d-block w-100" alt="Illegal Dumping Image 1">
+          </div>
+          <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x300?text=Illegal+Dumping+2" class="d-block w-100" alt="Illegal Dumping Image 2">
+          </div>
+          <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x300?text=Illegal+Dumping+3" class="d-block w-100" alt="Illegal Dumping Image 3">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Description -->
+      <div class="report-description">
+        <p><strong>Description:</strong> Large amounts of waste, including plastic and old furniture, have been illegally dumped in Sector 3. The area poses a serious environmental risk as the waste is near a water source. Immediate attention and clean-up are required.</p>
+      </div>
+    </div>
+
+    <!-- Report 2 -->
+    <div class="report-card">
+      <h3 class="report-title">Report #2: Illegal Dumping in Riverside Park</h3>
+      <div class="report-info">
+        <span>Reported By: Jane Smith</span> | 
+        <span>Reported On: 2025-05-02 02:30 PM</span>
+      </div>
+
+      <!-- Image Carousel -->
+      <div id="carouselExampleIndicators2" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://via.placeholder.com/800x300?text=Illegal+Dumping+Riverside+1" class="d-block w-100" alt="Illegal Dumping Riverside Park 1">
+          </div>
+          <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x300?text=Illegal+Dumping+Riverside+2" class="d-block w-100" alt="Illegal Dumping Riverside Park 2">
+          </div>
+          <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x300?text=Illegal+Dumping+Riverside+3" class="d-block w-100" alt="Illegal Dumping Riverside Park 3">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Description -->
+      <div class="report-description">
+        <p><strong>Description:</strong> Several bags of household waste have been left in the Riverside Park area, which is a public park visited by families. This is an ongoing issue that needs immediate action to prevent further environmental hazards.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+  
+{% endblock content %}

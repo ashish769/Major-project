@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Waste Status
+{% endblock title %}
+
+{% block css %}
+<style>
+  #map {
+    height: 500px;
+    width: 100%;
+  }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="p-4 flex gap-4 flex-wrap bg-gray-50 rounded shadow">
+  <button onclick="filterMarkers('degradable')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Degradable</button>
+  <button onclick="filterMarkers('recyclable')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Recyclable</button>
+  <button onclick="filterMarkers('nonDegradable')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Non-Degradable</button>
+  <button onclick="filterMarkers('all')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Show All</button>
+</div>
+
+<div id="map" class="rounded shadow-md border mt-4"></div>
+{% endblock content %}
+
+{% block js %}
+<script>
+  const map = L.map('map').setView([27.7172, 85.3240], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const icons = {
+    degradable: L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34]
+    }),
+    recyclable: L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34]
+    }),
+    nonDegradable: L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34]
+    })
+  };
+
+  const wasteReports = [
+    { lat: 27.7172, lng: 85.3240, type: 'degradable', desc: "Food Waste" },
+    { lat: 27.7125, lng: 85.3232, type: 'recyclable', desc: "Plastic Bottles" },
+    { lat: 27.7190, lng: 85.3270, type: 'nonDegradable', desc: "Medical Waste" },
+    { lat: 27.7205, lng: 85.3295, type: 'degradable', desc: "Market Leftovers" },
+    { lat: 27.7140, lng: 85.3260, type: 'recyclable', desc: "Cardboard" },
+    { lat: 27.7160, lng: 85.3215, type: 'nonDegradable', desc: "Chemicals" },
+    { lat: 27.7150, lng: 85.3300, type: 'recyclable', desc: "Metal" },
+    { lat: 27.7188, lng: 85.3195, type: 'degradable', desc: "Compost" }
+  ];
+
+  let allMarkers = [];
+
+  function showMarkers(typeFilter) {
+    allMarkers.forEach(marker => map.removeLayer(marker));
+    allMarkers = [];
+
+    wasteReports.forEach(report => {
+      if (typeFilter === 'all' || report.type === typeFilter) {
+        const marker = L.marker([report.lat, report.lng], { icon: icons[report.type] })
+          .addTo(map)
+          .bindPopup(`<strong>${report.type.replace(/([A-Z])/g, ' $1')}</strong><br>${report.desc}`);
+        allMarkers.push(marker);
+      }
+    });
+  }
+
+  showMarkers('all');
+
+  function filterMarkers(type) {
+    showMarkers(type);
+  }
+</script>
+{% endblock js %}
