@@ -21,7 +21,7 @@ def entry(request):
             if role == 'household':
                 return redirect('household')
             elif role == 'metro':
-                return redirect("metro")
+                return redirect("waste_status")
             elif role == 'organization':
                 return redirect('receiver')
         else:
