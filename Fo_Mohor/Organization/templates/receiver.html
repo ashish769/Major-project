@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Waste Receiver Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <style>
+    #map { height: 70vh; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <header class="bg-green-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Organization Waste Receiver Dashboard</h1>
+  </header>
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="hidden md:flex md:flex-col md:w-64 bg-white border-r shadow-md p-4 space-y-4">
+      <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onclick="showSection('requestsSection')">Requests</button>
+      <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onclick="showSection('mapContainer')">View Route</button>
+      <button class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600" onclick="showSection('profileSection')">Profile</button>
+    </aside>
+
+    <main class="flex-1 p-4">
+      <section id="requestsSection" class="hidden">
+        <h2 class="text-xl font-semibold mb-4">Waste Collection Requests</h2>
+        <div id="notificationBox" class="text-green-700 font-medium mb-3 hidden">Notification sent to users!</div>
+        <div class="grid gap-4">
+          <div class="p-4 bg-gray-100 rounded shadow" data-type="plastic" data-lat="27.6720" data-lng="85.3240">
+            <p><strong>Type:</strong> Plastic</p>
+            <p><strong>Quantity:</strong> 10kg</p>
+            <p><strong>Location:</strong> Lalitpur-10</p>
+            <button class="mt-2 bg-green-500 text-white px-3 py-1 rounded" onclick="acceptRequest(this)">Accept</button>
+          </div>
+          <div class="p-4 bg-gray-100 rounded shadow" data-type="organic" data-lat="27.6675" data-lng="85.3230">
+            <p><strong>Type:</strong> Organic</p>
+            <p><strong>Quantity:</strong> 5kg</p>
+            <p><strong>Location:</strong> Lalitpur-11</p>
+            <button class="mt-2 bg-green-500 text-white px-3 py-1 rounded" onclick="acceptRequest(this)">Accept</button>
+          </div>
+        </div>
+        <button class="mt-6 w-full bg-blue-600 text-white py-2 rounded" onclick="sendNotification()">Send Collection Time</button>
+      </section>
+
+      <section id="mapContainer" class="hidden">
+        <div id="map" class="w-full h-[70vh] rounded shadow"></div>
+      </section>
+
+      <section id="profileSection" class="hidden">
+        <h2 class="text-xl font-semibold mb-4">Profile</h2>
+        <div class="text-center">
+          <img id="profileImage" src="https://via.placeholder.com/100" class="mx-auto rounded-full mb-2" alt="Profile Image">
+          <input type="file" accept="image/*" onchange="uploadPhoto(event)" class="block mx-auto mb-2" />
+          <h3 class="text-lg font-semibold">Green Waste Co.</h3>
+          <p class="text-sm text-gray-600">Lalitpur, Nepal</p>
+          <p class="mt-2"><strong>Rank:</strong> Gold Tier</p>
+          <p><strong>History:</strong> 45 collections completed</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script>
+    const orgLocation = [27.6648, 85.3188];
+    const lalitpurBounds = L.latLngBounds([
+      [27.6600, 85.3100],
+      [27.6800, 85.3350]
+    ]);
+
+    const map = L.map('map', {
+      center: [27.6675, 85.3230],
+      zoom: 14,
+      minZoom: 13,
+      maxZoom: 18,
+      maxBounds: lalitpurBounds,
+      maxBoundsViscosity: 1.0
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    let routingControl = null;
+    const acceptedRequests = [];
+
+    function acceptRequest(button) {
+      const div = button.parentElement;
+      const type = div.getAttribute('data-type');
+      const lat = parseFloat(div.getAttribute('data-lat'));
+      const lng = parseFloat(div.getAttribute('data-lng'));
+
+      acceptedRequests.push([lat, lng]);
+      drawRoute();
+
+      button.disabled = true;
+      button.textContent = "Accepted";
+    }
+
+    function drawRoute() {
+      const waypoints = [orgLocation, ...acceptedRequests, orgLocation].map(c => L.latLng(c[0], c[1]));
+
+      if (routingControl) {
+        routingControl.setWaypoints(waypoints);
+      } else {
+        routingControl = L.Routing.control({
+          waypoints: waypoints,
+          draggableWaypoints: false,
+          addWaypoints: false,
+          show: false,
+          lineOptions: { styles: [{ color: 'purple', weight: 4 }] }
+        }).addTo(map);
+      }
+    }
+
+    function sendNotification() {
+      const box = document.getElementById('notificationBox');
+      if (acceptedRequests.length === 0) {
+        alert("No requests accepted yet.");
+      }
+      box.classList.remove('hidden');
+      setTimeout(() => box.classList.add('hidden'), 3000);
+    }
+
+    function uploadPhoto(event) {
+      const reader = new FileReader();
+      reader.onload = e => document.getElementById('profileImage').src = e.target.result;
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function showSection(sectionId) {
+      ['requestsSection', 'mapContainer', 'profileSection'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(sectionId).classList.remove('hidden');
+
+      if (sectionId === 'mapContainer') {
+        setTimeout(() => map.invalidateSize(), 100);
+      }
+    }
+
+    showSection('requestsSection');
+  </script>
+</body>
+</html>
