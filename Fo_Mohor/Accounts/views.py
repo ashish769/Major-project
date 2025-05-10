@@ -19,11 +19,11 @@ def entry(request):
             login(request, user)  # Corrected line
             role = user.role
             if role == 'household':
-                return redirect('waste_status')
+                return redirect('household')
             elif role == 'metro':
-                return redirect("vehicle_details")
+                return redirect("metro")
             elif role == 'organization':
-                return redirect('schedule')
+                return redirect('receiver')
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('login')
