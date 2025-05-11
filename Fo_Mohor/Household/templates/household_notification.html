@@ -1,15 +1,47 @@
 {% extends "household_base.html" %}
+{% load static %}
+
 {% block title %}
-  Notification
+  Notifications
 {% endblock title %}
 
 {% block content %}
-
-    <div class="content">
-        <div id="notifications" class="section">
-        <h2>Notifications</h2>
-        <div class="notification" style="display:block;">Your last reported waste will be collected between 2 PM - 4 PM today.</div>
-      </div>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header text-white">
+      <h2 class="mb-0">Notifications</h2>
     </div>
-  
+    
+    <div class="card-body">
+      <div class="list-group">
+        <!-- Sample notification - in a real app these would come from your backend -->
+        <div class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Waste Collection Scheduled</h5>
+            <small class="text-muted">Today, 10:30 AM</small>
+          </div>
+          <p class="mb-1">Your last reported waste will be collected between 2 PM - 4 PM today.</p>
+        </div>
+        
+        <!-- Additional sample notifications -->
+        <div class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Payment Received</h5>
+            <small class="text-muted">Yesterday, 3:45 PM</small>
+          </div>
+          <p class="mb-1">Your recent payment of Rs. 500 has been received successfully.</p>
+        </div>
+        
+        <div class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Service Update</h5>
+            <small class="text-muted">2 days ago</small>
+          </div>
+          <p class="mb-1">New recycling services are now available in your area.</p>
+        </div>
+      </div>
+      
+      
+  </div>
+</div>
 {% endblock content %}

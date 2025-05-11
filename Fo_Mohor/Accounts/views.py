@@ -19,7 +19,7 @@ def entry(request):
             login(request, user)  # Corrected line
             role = user.role
             if role == 'household':
-                return redirect('household')
+                return redirect('waste_report')
             elif role == 'metro':
                 return redirect("waste_status")
             elif role == 'organization':

@@ -4,28 +4,100 @@
 {% endblock title %}
 
 {% block content %}
- <div id="report" class="section active">
-        <h2>Report Waste</h2>
-        <div class="form-group">
-          <label>Waste Type</label>
-          <select id="wasteType" onchange="showSubTypes()">
+<div id="report" class="section active">
+    <h2>Report Waste</h2>
+    <div class="form-group">
+        <label>Waste Type</label>
+        <select id="wasteType" onchange="showSubTypes()">
             <option value="">-- Select Waste Type --</option>
             <option value="organic">Organic</option>
             <option value="nonorganic">Non-Organic</option>
             <option value="ewaste">E-Waste</option>
-          </select>
-        </div>
-        <div id="subTypes"></div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea placeholder="Write short description..."></textarea>
-        </div>
-        <button id="locationBtn">Enable Location</button>
-        <button id="reportBtn" disabled>Submit Report</button>
-        <div class="notification" id="vehicleNotif">Vehicle will arrive between 2 PM - 4 PM</div>
-      </div>
+        </select>
+    </div>
+    <div id="subTypes"></div>
+    <div class="form-group">
+        <label>Description</label>
+        <textarea id="description" placeholder="Write short description..."></textarea>
+    </div>
+    <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="locationInput" class="form-control" readonly>
+        <button type="button" id="locationBtn" onclick="getUserLocation()">Enable Location</button>
+    </div>
+    <button id="reportBtn" disabled>Submit Report</button>
+    <div class="notification" id="vehicleNotif">Vehicle will arrive between 2 PM - 4 PM</div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+    // Location functionality
+    function getUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const latitude = position.coords.latitude.toFixed(6);
+                    const longitude = position.coords.longitude.toFixed(6);
+                    document.getElementById('locationInput').value = `${latitude}, ${longitude}`;
+                    document.getElementById('reportBtn').disabled = false;
+                },
+                function(error) {
+                    console.error('Geolocation error:', error);
+                    alert('Unable to retrieve your location. Please ensure location services are enabled.');
+                }
+            );
+        } else {
+            alert('Geolocation is not supported by your browser.');
+        }
+    }
+
+    // Waste type subcategories functionality
+    function showSubTypes() {
+        const type = document.getElementById('wasteType').value;
+        let html = '';
         
-      {% endblock content %}
-      {% block js %}
-        <script src="static 'script.js'"></script>
-      {% endblock js %}
+        if (type === 'organic') {
+            const items = [
+                'Pig Feed Waste(Fruit & veggie scraps, rice, stale bread, eggshells)', 
+                'Compostable Waste(Tea leaves, coffee grounds, garden waste, spoiled fruits/veggies)'
+            ];
+            html += items.map(item => `
+                <div class="waste-item">
+                    <label><input type="checkbox" onchange="toggleQty(this)"> ${item}</label>
+                    <input type="number" placeholder="Quantity (kg)" disabled class="qty-input">
+                </div>
+            `).join('');
+        } 
+        else if (type === 'nonorganic') {
+            const items = ['Plastic Bottle', 'Glass Bottle', 'Metal Scrap', 'Copy Books'];
+            html += items.map(item => `
+                <div class="waste-item">
+                    <label><input type="checkbox" onchange="toggleQty(this)"> ${item}</label>
+                    <input type="number" placeholder="Quantity (kg)" disabled class="qty-input">
+                </div>
+            `).join('');
+        } 
+        else if (type === 'ewaste') {
+            const items = ['Small (phones)', 'Medium (printers)', 'Large (TVs)'];
+            html += items.map(item => `
+                <div class="waste-item">
+                    <label><input type="checkbox" onchange="toggleQty(this)"> ${item}</label>
+                    <input type="number" placeholder="Quantity" disabled class="qty-input">
+                </div>
+            `).join('');
+        }
+        
+        document.getElementById('subTypes').innerHTML = html;
+    }
+
+    function toggleQty(checkbox) {
+        const parentDiv = checkbox.closest('.waste-item');
+        const input = parentDiv.querySelector('.qty-input');
+        input.disabled = !checkbox.checked;
+        if (!checkbox.checked) {
+            input.value = '';
+        }
+    }
+</script>
+{% endblock js %}

@@ -41,13 +41,34 @@
     <div class="sidebar">
       <h3>Menu</h3>
       <ul>
-        <a href="{% url 'waste_report' %}"><li  >Waste_Report</li></a>
-        <a href="{% url 'illegal_report' %}"><li  >Illegal Dumping</li></a>
-        <a href="{% url 'household_profile' %}"><li  >Manage Profile</li></a>
-        <a href="{% url 'household_notification' %}"><li  >Notifications</li></a>
-        <a href="{% url 'map_view' %}"><li  >View in Map</li></a>
+        <li onclick="navigateToWasteReport()">Waste Report</li>
+<li onclick="navigateToIllegalDumping()">Illegal Dumping</li>
+<li onclick="navigateToManageProfile()">Manage Profile</li>
+<li onclick="navigateToNotifications()">Notifications</li>
+<li onclick="navigateToMapView()">View in Map</li>
       </ul>
     </div>
+    <script>
+function navigateToWasteReport() {
+    window.location.href = "{% url 'waste_report' %}";
+}
+
+function navigateToIllegalDumping() {
+    window.location.href = "{% url 'illegal_report' %}";
+}
+
+function navigateToManageProfile() {
+    window.location.href = "{% url 'household_profile' %}";
+}
+
+function navigateToNotifications() {
+    window.location.href = "{% url 'household_notification' %}";
+}
+
+function navigateToMapView() {
+    window.location.href = "{% url 'map_view' %}";
+}
+</script>
 
 
     {% block content %}
