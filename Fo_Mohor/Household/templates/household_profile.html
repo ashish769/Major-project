@@ -1,0 +1,119 @@
+{% extends "household_base.html" %}
+{% load static %}
+{% block title %}
+  profile
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row g-4">
+    <!-- Profile and Wallet -->
+    <div class="col-md-4">
+      <div class="profile-card text-center">
+        <img src="{% static 'pp photo.jpg' %}" class="profile-img mb-3" alt="User Image">
+        <h4 class="mb-1">Ashish Raj Poudel</h4>
+        <p class="text-muted mb-3">Active User</p>
+        <div class="wallet-box mt-3">
+          <p class="mb-1">Points</p>
+          <div id="userPoints" class="animated-number">0</div>
+          <hr class="bg-light">
+          <p class="mb-1">Category</p>
+          <div id="userCategory">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Status and History -->
+    <div class="col-md-8">
+      <div class="profile-card">
+        <h5 class="mb-3">Current Report Status</h5>
+        <div class="alert alert-success" role="alert">
+          Your last report has been reviewed and approved.
+        </div>
+
+        <h5 class="mt-4 mb-3">Recent 5 Reports</h5>
+        <div class="table-responsive">
+          <table class="table table-striped report-table">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>2025-05-10</td>
+                <td><span class="badge bg-success">Approved</span></td>
+                <td>Everything looks good</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>2025-04-25</td>
+                <td><span class="badge bg-warning text-dark">Pending</span></td>
+                <td>Awaiting review</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>2025-04-10</td>
+                <td><span class="badge bg-danger">Rejected</span></td>
+                <td>Incomplete information</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>2025-03-30</td>
+                <td><span class="badge bg-success">Approved</span></td>
+                <td>Verified</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>2025-03-15</td>
+                <td><span class="badge bg-success">Approved</span></td>
+                <td>Clear details</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+  {% block js %}
+    <script>
+  const totalPoints = 3650; // example points
+  const userPointsEl = document.getElementById("userPoints");
+  const userCategoryEl = document.getElementById("userCategory");
+
+  // Determine category
+  function getCategory(points) {
+    if (points >= 5000) return "Diamond";
+    if (points >= 3000) return "Gold";
+    if (points >= 1000) return "Silver";
+    return "Bronze";
+  }
+
+  // Animate points count-up
+  let start = 0;
+  const duration = 1000;
+  const increment = totalPoints / (duration / 10);
+  const counter = setInterval(() => {
+    start += increment;
+    if (start >= totalPoints) {
+      userPointsEl.textContent = totalPoints;
+      clearInterval(counter);
+    } else {
+      userPointsEl.textContent = Math.floor(start);
+    }
+  }, 10);
+
+  // Set user category
+  userCategoryEl.textContent = getCategory(totalPoints);
+</script>
+  {% endblock js %}
+
+
+</body>
+</html>
