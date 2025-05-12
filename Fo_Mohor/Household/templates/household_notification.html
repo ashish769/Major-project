@@ -14,34 +14,45 @@
     
     <div class="card-body">
       <div class="list-group">
-        <!-- Sample notification - in a real app these would come from your backend -->
+
+        {# Waste Report Notifications #}
+        {% for report in waste_reports %}
         <div class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Waste Collection Scheduled</h5>
-            <small class="text-muted">Today, 10:30 AM</small>
+            <h5 class="mb-1">Waste Report - {{ report.waste_type|title }}</h5>
+            <small class="text-muted">{{ report.report_time }}</small>
           </div>
-          <p class="mb-1">Your last reported waste will be collected between 2 PM - 4 PM today.</p>
+          <p class="mb-1">
+            Your report from {{ report.location }} is currently <strong>{{ report.status|title }}</strong>.
+            {% if report.description %}
+              <br>{{ report.description }}
+            {% endif %}
+          </p>
         </div>
-        
-        <!-- Additional sample notifications -->
+        {% empty %}
+        <p class="text-muted">your are still not reporting anything.</p>
+        {% endfor %}
+
+        {# Illegal Dumping Notifications #}
+        {% for dump in illegal_dumps %}
         <div class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Payment Received</h5>
-            <small class="text-muted">Yesterday, 3:45 PM</small>
+            <h5 class="mb-1">Illegal Dumping Report</h5>
+            <small class="text-muted">{{ dump.report_time }}</small>
           </div>
-          <p class="mb-1">Your recent payment of Rs. 500 has been received successfully.</p>
+          <p class="mb-1">
+            Reported in {{ dump.Area }}. Status: <strong>{{ dump.status|title }}</strong>.
+            {% if dump.description %}
+              
+            {% endif %}
+          </p>
         </div>
-        
-        <div class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Service Update</h5>
-            <small class="text-muted">2 days ago</small>
-          </div>
-          <p class="mb-1">New recycling services are now available in your area.</p>
-        </div>
+        {% empty %}
+        <p class="text-muted">your are still not reporting anything about illegal dumping.</p>
+        {% endfor %}
+
       </div>
-      
-      
+    </div>
   </div>
 </div>
 {% endblock content %}

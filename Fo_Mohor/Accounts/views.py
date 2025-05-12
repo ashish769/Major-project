@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from .models import Household, Organization, Metro
-from django.contrib.auth import login,authenticate
+from django.contrib.auth import login,authenticate,logout
 
 
 User = get_user_model()
@@ -97,3 +97,7 @@ def sign_up(request):
             return redirect('signup')
 
     return render(request, 'signup.html', {'wards': wards})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
