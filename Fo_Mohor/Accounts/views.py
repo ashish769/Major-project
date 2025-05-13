@@ -23,7 +23,7 @@ def entry(request):
             elif role == 'metro':
                 return redirect("waste_status")
             elif role == 'organization':
-                return redirect('receiver')
+                return redirect('requests')
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('login')

@@ -1,0 +1,40 @@
+{% extends 'reciever_base.html' %}
+{% block title %}Route{% endblock %}
+
+{% block content %}
+<div id="map" class="w-full h-[70vh] rounded shadow"></div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const orgLocation = [27.6648, 85.3188];
+  const lalitpurBounds = L.latLngBounds([
+    [27.6600, 85.3100],
+    [27.6800, 85.3350]
+  ]);
+
+  const map = L.map('map', {
+    center: [27.6675, 85.3230],
+    zoom: 14,
+    minZoom: 13,
+    maxZoom: 18,
+    maxBounds: lalitpurBounds,
+    maxBoundsViscosity: 1.0
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const acceptedRequests = [[27.6720, 85.3240], [27.6675, 85.3230]];
+  const waypoints = [orgLocation, ...acceptedRequests, orgLocation].map(c => L.latLng(c[0], c[1]));
+
+  L.Routing.control({
+    waypoints: waypoints,
+    draggableWaypoints: false,
+    addWaypoints: false,
+    show: false,
+    lineOptions: { styles: [{ color: 'purple', weight: 4 }] }
+  }).addTo(map);
+</script>
+{% endblock %}
