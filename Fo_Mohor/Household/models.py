@@ -17,12 +17,15 @@ class WasteReport(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     waste_type = models.CharField(max_length=20, choices=WASTE_TYPE_CHOICES)
-    items = models.JSONField()  # e.g. [{'item': 'Plastic Bottle', 'quantity': 3}]
+    items = models.JSONField()  
     description = models.TextField(blank=True)
     location = models.CharField(max_length=100)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     report_time = models.DateTimeField(default=timezone.now)
-    points = models.IntegerField(default=0)  
+    points = models.IntegerField(default=0) 
+    collected_by = models.IntegerField(blank=True, default=0)  
+    collected_at = models.DateTimeField(null=True, blank=True, default=None)
+
 
     def __str__(self):
         return f"{self.user.username} - {self.waste_type} ({self.status})"
@@ -35,7 +38,7 @@ class IllegalDumping(models.Model):
     picture = models.ImageField(upload_to='media/')
     status = models.CharField(max_length=20, default='pending',blank=True) 
     report_time = models.DateTimeField(default=timezone.now)
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=0) 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
