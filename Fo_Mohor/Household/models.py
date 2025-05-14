@@ -46,3 +46,16 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    report = models.ForeignKey('IllegalDumping', on_delete=models.CASCADE, related_name='likes')
+    liked_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='pending', blank=True) 
+
+
+    class Meta:
+        unique_together = ('user', 'report')  # one like per user per report
+
+    def __str__(self):
+        return f"{self.user.username} liked report {self.report.id}"

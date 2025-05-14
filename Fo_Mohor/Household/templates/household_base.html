@@ -43,6 +43,7 @@
       <ul>
         <li onclick="navigateToWasteReport()">Waste Report</li>
 <li onclick="navigateToIllegalDumping()">Illegal Dumping</li>
+<li onclick="navigateToViewIllegalDumping()">View Illegal Dumping</li>
 <li onclick="navigateToManageProfile()">Manage Profile</li>
 <li onclick="navigateToNotifications()">Notifications</li>
 <li onclick="navigateToMapView()">View in Map</li>
@@ -55,6 +56,9 @@ function navigateToWasteReport() {
 
 function navigateToIllegalDumping() {
     window.location.href = "{% url 'illegal_report' %}";
+}
+function navigateToViewIllegalDumping() {
+    window.location.href = "{% url 'all_reports' %}";
 }
 
 function navigateToManageProfile() {

@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from common.decorators import role_required
-from .models import WasteReport,IllegalDumping
+from .models import WasteReport,IllegalDumping,Like
 from django.contrib import messages
 from .forms import ProfilePhotoForm
 from .models import UserProfile
@@ -129,4 +129,19 @@ def household_notification(request):
 def map_view(request):
     return render(request,'map.html')
 
+def all_reports(request):
+    reports = IllegalDumping.objects.all().order_by('-report_time')
+    user_likes = Like.objects.filter(user=request.user) if request.user.is_authenticated else []
+    liked_ids = [like.report.id for like in user_likes]
+    return render(request, 'all_reports.html', {
+        'reports': reports,
+        'liked_ids': liked_ids
+    })
 
+
+def like_report(request, report_id):
+    report = get_object_or_404(IllegalDumping, id=report_id)
+    like, created = Like.objects.get_or_create(user=request.user, report=report)
+    if not created:
+        like.delete()  # Unlike
+    return redirect('all_reports')
