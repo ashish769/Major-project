@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from common.decorators import role_required
 from Household.models import WasteReport
 
@@ -37,3 +37,13 @@ def route_view(request):
 
 def profile_view(request):
     return render(request, 'reciever_profile.html')
+
+
+def accept_request(request,report_id):
+    report = get_object_or_404(WasteReport, id=report_id)
+    report.status='accepted'
+    report.collected_by=request.user.organization.org_name
+    report.save()
+
+    return render(request,'requests.html')
+    

@@ -10,4 +10,5 @@ urlpatterns = [
     path('reports/', all_reports, name='all_reports'),
     path('like/<int:report_id>/', like_report, name='like_report'),
     
+    
 ]
