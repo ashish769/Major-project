@@ -103,10 +103,10 @@
                 <td>{{ report.report_time|date:"Y-m-d" }}</td>
                 <td>{{ report.waste_type }}</td>
                 <td>
-                  {% if report.status == 'Approved' %}
-                    <span class="badge bg-success">{{ report.status }}</span>
+                  {% if report.status == 'accepted' %}
+                    <span class="badge bg-warning">{{ report.status }}</span>
                   {% elif report.status == 'pending' %}
-                    <span class="badge bg-warning text-dark">{{ report.status }}</span>
+                    <span class="badge bg-danger text-dark">{{ report.status }}</span>
                   {% elif report.status == 'Rejected' %}
                     <span class="badge bg-danger">{{ report.status }}</span>
                   {% else %}
@@ -144,10 +144,10 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ dump.report_time|date:"Y-m-d" }}</td>
                 <td>
-                  {% if dump.status == 'Approved' %}
-                    <span class="badge bg-success">{{ dump.status }}</span>
+                  {% if dump.status == 'accepted' %}
+                    <span class="badge bg-warnign">{{ dump.status }}</span>
                   {% elif dump.status == 'pending' %}
-                    <span class="badge bg-warning text-dark">{{ dump.status }}</span>
+                    <span class="badge bg-danger text-dark">{{ dump.status }}</span>
                   {% elif dump.status == 'Rejected' %}
                     <span class="badge bg-danger">{{ dump.status }}</span>
                   {% else %}

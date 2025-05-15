@@ -11,8 +11,9 @@ class WasteReport(models.Model):
     ]
     STATUS_CHOICES=[
         ('pending','Pending'),
+         ('accepted','Accepted'),
         ('completed','Completed'),
-        ('cancelled','Cancelled')
+       
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
