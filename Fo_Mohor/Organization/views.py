@@ -2,9 +2,12 @@ from django.shortcuts import render,get_object_or_404,redirect
 from common.decorators import role_required
 from common.functions import haversine_distance_time
 from Household.models import WasteReport
+from .models import OrganizationProfile
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from .forms import ProfilePhotoForm
+
 
 # Create your views here.
 @role_required(allowed_roles=['organization'])
@@ -99,7 +102,19 @@ def route_view(request):
     return render(request, 'route.html')
 
 def profile_view(request):
-    return render(request, 'reciever_profile.html')
+    profile, created = OrganizationProfile.objects.get_or_create(user=request.user)
+    form = ProfilePhotoForm(request.POST or None, request.FILES or None,instance=profile)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('receiver_profile')
+
+    
+    context={
+        'form': form,
+        
+    }
+    return render(request,'receiver_profile.html',context)
 
 
 def accept_request(request, report_id):
