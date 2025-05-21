@@ -91,6 +91,49 @@
         }
       });
     });
+ 
+     // Get user's current location
+  navigator.geolocation.getCurrentPosition(function (position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    console.log("Sending location to server:", latitude, longitude);
+
+    fetch("/organization/get-location/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken")  // CSRF token for Django
+      },
+      body: JSON.stringify({
+        latitude: latitude,
+        longitude: longitude
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Server response:", data);
+    })
+    .catch(error => {
+      console.error("Error sending location:", error);
+    });
+  });
+
+  // Helper to get CSRF token from cookie
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + "=")) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
   </script>
 
   {% block extra_scripts %}{% endblock %}
