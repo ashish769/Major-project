@@ -24,7 +24,7 @@ class WasteReport(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     report_time = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(default=0) 
-    collected_by = models.CharField(blank=True, default=None,max_length=50)  
+    collected_by = models.CharField(blank=True,null=True, default=None,max_length=50)  
     collected_at = models.DateTimeField(null=True, blank=True, default=None)
 
 

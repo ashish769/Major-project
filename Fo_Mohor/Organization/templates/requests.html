@@ -4,7 +4,6 @@
 {% block content %}
 <h2 class="text-2xl font-bold mb-6 text-center text-green-700">🗑️ Incoming Waste Pickup Requests</h2>
 
-
 <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
   {% for report in reports %}
   <div class="bg-white rounded-2xl shadow-lg p-5 border border-gray-200 relative hover:shadow-xl transition"
@@ -44,14 +43,11 @@
 </div>
 
 <div class="mt-10 text-center">
-  
 </div>
 {% endblock content %}
 
 {% block extra_scripts %}
 <script>
-  
-
   document.addEventListener('DOMContentLoaded', function () {
     const requestCards = document.querySelectorAll('[data-lat][data-lng]');
 
@@ -64,7 +60,11 @@
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
           .then(response => response.json())
           .then(data => {
-            addressSpan.textContent = data.display_name || 'Address not found';
+            const address = data.address;
+            const part1 = address.road || address.neighbourhood || '';
+            const part2 = address.suburb || address.village || address.town || '';
+            const part3 = address.city || address.county || address.state || '';
+            addressSpan.textContent = [part1, part2, part3].filter(Boolean).join(', ') || 'Address not found';
           })
           .catch(() => {
             addressSpan.textContent = 'Unable to fetch address';
